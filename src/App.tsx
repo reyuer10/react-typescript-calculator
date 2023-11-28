@@ -5,11 +5,8 @@ import Header from "./components/Header";
 
 const App: React.FC = () => {
   const [numValue, setNumValue] = useState<string>("");
-  // const [resultsValue, setResultsValue] = useState<string>("");
   const [secondValue, setSecondValue] = useState<string>("");
   const [addMinus, setAddMinus] = useState<boolean>(false);
-  // const [operator, setOperator] = useState<boolean>(false);
-  // const Operator = ['+', '-', '*', '/'];
 
   const handleNumberInput = (input: string) => {
     if (numValue === "" && input.slice(-1) === "0") {
@@ -18,17 +15,14 @@ const App: React.FC = () => {
 
     setNumValue(numValue + input);
     setSecondValue(secondValue + input);
-
-    // if(numValue === "" && secondValue.includes(numValue + "/100")){
-    //   setSecondValue(secondValue + "*")
-    // }
   };
 
   const handleResults = () => {
-    if (numValue !== "" && secondValue.includes("/100")) {
-      setSecondValue(secondValue.replace(`/100`, `/100${"*"}`));
-      setNumValue(eval(secondValue));
+    if (numValue === "" && secondValue.slice(-1) === "*") {
+      setSecondValue(secondValue.replace(`/100*`, `/100`));
+      return;
     }
+
 
     setNumValue(eval(secondValue));
   };
@@ -64,7 +58,7 @@ const App: React.FC = () => {
   };
 
   const handleDivide = () => {
-    handleNumberInput("-");
+    handleNumberInput("/");
     setNumValue("");
     setSecondValue(numValue + "/");
   };
@@ -73,12 +67,11 @@ const App: React.FC = () => {
     handleNumberInput("%");
     setNumValue("");
 
-    setSecondValue(numValue + "/100");
+    setSecondValue(numValue + "/100*");
   };
 
   console.log("second value: ", secondValue);
   console.log("first value: ", numValue);
-  // console.log(addMinus);
 
   return (
     <div className="true-to-self h-screen w-screen flex flex-col justify-center items-center">
