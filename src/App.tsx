@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Resultsvalue from "./components/ResultsValue";
 import ButtonValue from "./components/ButtonValue";
 import Header from "./components/Header";
@@ -7,6 +7,7 @@ const App: React.FC = () => {
   const [numValue, setNumValue] = useState<string>("");
   const [secondValue, setSecondValue] = useState<string>("");
   const [addMinus, setAddMinus] = useState<boolean>(false);
+  // const [isSecondValuePercentage, setIsSecondValuePercentage] = useState<boolean>(false);
 
   const handleNumberInput = (input: string) => {
     if (numValue === "" && input.slice(-1) === "0") {
@@ -16,22 +17,18 @@ const App: React.FC = () => {
     setNumValue(numValue + input);
     setSecondValue(secondValue + input);
   };
-
+  // button results
   const handleResults = () => {
-    if (numValue === "" && secondValue.slice(-1) === "*") {
-      setSecondValue(secondValue.replace(`/100*`, `/100`));
-      return;
-    }
-
-
     setNumValue(eval(secondValue));
   };
 
+  // for button clear
   const handleInputClear = () => {
     setNumValue("");
     setSecondValue("");
   };
 
+  // Add minus sign button
   const handleAddMinus = () => {
     setAddMinus(!addMinus);
     addMinus
@@ -39,39 +36,37 @@ const App: React.FC = () => {
       : setNumValue(numValue.replace("-", ""));
   };
 
+  // Operator add, minus, multiply, divide
   const handleAdd = () => {
-    handleNumberInput("+");
     setNumValue("");
     setSecondValue(numValue + "+");
   };
 
   const handleMinus = () => {
-    handleNumberInput("-");
     setNumValue("");
     setSecondValue(numValue + "-");
   };
 
   const handleMultiply = () => {
-    handleNumberInput("*");
     setNumValue("");
     setSecondValue(numValue + "*");
   };
 
   const handleDivide = () => {
-    handleNumberInput("/");
     setNumValue("");
     setSecondValue(numValue + "/");
   };
 
+  // For percentage
   const handlePercentage = () => {
-    handleNumberInput("%");
     setNumValue("");
-
-    setSecondValue(numValue + "/100*");
+    setNumValue(eval(numValue + "/100"));
   };
 
-  console.log("second value: ", secondValue);
-  console.log("first value: ", numValue);
+  useEffect(() => {
+    console.log("second value: ", secondValue);
+    console.log("first value: ", numValue);
+  }, [secondValue, numValue]);
 
   return (
     <div className="true-to-self h-screen w-screen flex flex-col justify-center items-center">
