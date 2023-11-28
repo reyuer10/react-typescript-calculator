@@ -5,22 +5,80 @@ import Header from "./components/Header";
 
 const App: React.FC = () => {
   const [numValue, setNumValue] = useState<string>("");
-  // const [resultsValue, setResultsValue] = useState<number>(0);
+  // const [resultsValue, setResultsValue] = useState<string>("");
+  const [secondValue, setSecondValue] = useState<string>("");
+  const [addMinus, setAddMinus] = useState<boolean>(false);
+  // const [operator, setOperator] = useState<boolean>(false);
+  // const Operator = ['+', '-', '*', '/'];
 
-  const handleNumberInput = (input: number) => {
+  const handleNumberInput = (input: string) => {
+    if (numValue === "" && input.slice(-1) === "0") {
+      return;
+    }
+
     setNumValue(numValue + input);
-  };
+    setSecondValue(secondValue + input);
 
-  // const handleOperator = (input: number) => {
-  //   setNumValue(numValue + input);
-  // };
+    // if(numValue === "" && secondValue.includes(numValue + "/100")){
+    //   setSecondValue(secondValue + "*")
+    // }
+  };
 
   const handleResults = () => {
-    setNumValue(eval(numValue));
+    if (numValue !== "" && secondValue.includes("/100")) {
+      setSecondValue(secondValue.replace(`/100`, `/100${"*"}`));
+      setNumValue(eval(secondValue));
+    }
+
+    setNumValue(eval(secondValue));
   };
+
   const handleInputClear = () => {
-    setNumValue("0");
+    setNumValue("");
+    setSecondValue("");
   };
+
+  const handleAddMinus = () => {
+    setAddMinus(!addMinus);
+    addMinus
+      ? setNumValue("-" + numValue)
+      : setNumValue(numValue.replace("-", ""));
+  };
+
+  const handleAdd = () => {
+    handleNumberInput("+");
+    setNumValue("");
+    setSecondValue(numValue + "+");
+  };
+
+  const handleMinus = () => {
+    handleNumberInput("-");
+    setNumValue("");
+    setSecondValue(numValue + "-");
+  };
+
+  const handleMultiply = () => {
+    handleNumberInput("*");
+    setNumValue("");
+    setSecondValue(numValue + "*");
+  };
+
+  const handleDivide = () => {
+    handleNumberInput("-");
+    setNumValue("");
+    setSecondValue(numValue + "/");
+  };
+
+  const handlePercentage = () => {
+    handleNumberInput("%");
+    setNumValue("");
+
+    setSecondValue(numValue + "/100");
+  };
+
+  console.log("second value: ", secondValue);
+  console.log("first value: ", numValue);
+  // console.log(addMinus);
 
   return (
     <div className="true-to-self h-screen w-screen flex flex-col justify-center items-center">
@@ -31,6 +89,12 @@ const App: React.FC = () => {
           handleInputClear={handleInputClear}
           handleNumberInput={handleNumberInput}
           handleResults={handleResults}
+          handleAdd={handleAdd}
+          handleMinus={handleMinus}
+          handleMultiply={handleMultiply}
+          handleDivide={handleDivide}
+          handlePercentage={handlePercentage}
+          handleAddMinus={handleAddMinus}
         />
       </div>
     </div>
